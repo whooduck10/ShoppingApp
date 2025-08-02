@@ -1,3 +1,7 @@
+#!/bin/bash
+
+# Create .env file with Supabase PostgreSQL connection
+cat > .env << EOF
 # Server Configuration
 PORT=8080
 NODE_ENV=development
@@ -10,7 +14,7 @@ JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 JWT_EXPIRE=24h
 
 # Database Configuration (PostgreSQL via Supabase)
-DATABASE_URL=postgresql://postgres:password@db.mcwoxoftrbrusjstkpxg.supabase.co:5432/postgres
+DATABASE_URL=postgresql://postgres:Huuduc18102004;@db.mcwoxoftrbrusjstkpxg.supabase.co:5432/postgres
 DB_HOST=db.mcwoxoftrbrusjstkpxg.supabase.co
 DB_PORT=5432
 DB_NAME=postgres
@@ -36,4 +40,8 @@ CLOUDINARY_API_SECRET=your-api-secret
 REDIS_URL=redis://localhost:6379
 
 # Logging Configuration
-LOG_LEVEL=info 
+LOG_LEVEL=info
+EOF
+
+echo "✅ .env file created successfully!"
+echo "📝 Please review and update the JWT_SECRET and other sensitive values before production use." 

@@ -6,6 +6,10 @@ const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
+// Database imports
+const { testConnection } = require('./config/database');
+const { initDatabase } = require('./config/initDatabase');
+
 const app = express();
 const PORT = process.env.PORT || 8080;
 
@@ -75,11 +79,28 @@ app.get('/', (req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Luxe Perfumes API server running on port ${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/health`);
-  console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+// Initialize database and start server
+const startServer = async () => {
+  try {
+    // Test database connection
+    await testConnection();
+    
+    // Initialize database (create tables and sample data)
+    await initDatabase();
+    
+    // Start server
+    app.listen(PORT, () => {
+      console.log(`🚀 Luxe Perfumes API server running on port ${PORT}`);
+      console.log(`📊 Health check: http://localhost:${PORT}/health`);
+      console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`🗄️  Database: PostgreSQL (Supabase)`);
+    });
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
 
 module.exports = app; 
